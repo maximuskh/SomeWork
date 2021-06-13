@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Azenix.LogParserConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -16,7 +17,7 @@ namespace Azenix.LogParserConsole
             var filePath = Path.GetFullPath(args[0]);
             if (File.Exists(filePath))
             {
-                var input = File.ReadAllText(filePath);
+                var input = await File.ReadAllTextAsync(filePath);
                 var parseResult = new LogParser.LogParser().Parse(input);
                 var newLine = Environment.NewLine;
                 Console.WriteLine($"*****Unique IP Addresses Count*****{newLine}{parseResult.UniqueIpAddressesCount}");
@@ -29,7 +30,7 @@ namespace Azenix.LogParserConsole
             {
                 Console.WriteLine($"File {filePath} does not exist");
             }
-
+            Console.WriteLine("Press any key to close!");
             Console.ReadKey();
         }
     }

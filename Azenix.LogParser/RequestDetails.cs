@@ -2,7 +2,7 @@
 
 namespace Azenix.LogParser
 {
-    public class RequestDetails
+    class RequestDetails
     {
         public string IpAddress { get; set; }
         public bool IsAdmin { get; set; }
