@@ -43,10 +43,31 @@ namespace Azenix.LogParser.Tests
         }
 
         [Fact]
+        public void Given_InvalidTextInput_NoResultReturned()
+        {
+            // Arrange
+            var input = new StringBuilder();
+            for (var i = 0; i < 10; i++)
+            {
+                input.Append(Generators.GetRandomString(20));
+                input.Append(Environment.NewLine);
+            }
+
+            // Action
+            var result = _logParser.Parse(input.ToString());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.UniqueIpAddressesCount.ShouldBe(0);
+            result.Top3MostActiveIpAddresses.Length.ShouldBe(0);
+            result.Top3MostVisitedUrls.Length.ShouldBe(0);
+        }
+
+        [Fact]
         public void Given_RepeatedIpAddresses_UniqueIpAddressesCount_ShouldConsiderUniqueIpAddresses()
         {
             // Arrange
-            var url = "test.com";
+            const string url = "test.com";
             var ip1 = Generators.GetRandomIpAddress();
             var ip2 = Generators.GetRandomIpAddress();
             var ip3 = Generators.GetRandomIpAddress();
@@ -69,7 +90,7 @@ namespace Azenix.LogParser.Tests
         public void Top3MostActiveIpAddresses_ShouldNotConsider_MovedPermanently_Or_TemporaryRedirect_Logs_ByOrderingDescing()
         {
             // Arrange
-            var url = "test.com";
+            const string url = "test.com";
             var logFile = new StringBuilder();
 
             // Valid record counts 5
